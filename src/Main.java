@@ -1,9 +1,12 @@
 static String lastWord="";//для хранения последнего слова
+static  final Object lock = new Object();
 void main() throws InterruptedException{
     Thread chicken = new Thread(()->{//создаем поток курица
         for(int i=0;i<10;i++) {//поток будет 10 раз повторять слово "курица"
+            synchronized (lock) {
             System.out.println("Курица");
             lastWord = "курица";//запоминаем последнее слово
+            }
             try {
                 Thread.sleep(100);//задержка между словами чтобы потоки успевали перемешиваться при выводе (чтобы не было одинаковых слов подряд)
             }
@@ -15,8 +18,10 @@ void main() throws InterruptedException{
     });
     Thread egg = new Thread(()->{//создаем поток яйцо
         for(int i=0;i<10;i++) {//поток будет 10 раз повторять слово "яйцо"
+            synchronized (lock){
             System.out.println("Яйцо");
             lastWord = "яйцо";//запоминаем последнее слово
+            }
             try {
                 Thread.sleep(100);//задержка между словами
             }
